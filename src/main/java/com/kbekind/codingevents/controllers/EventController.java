@@ -60,7 +60,7 @@ public class EventController {
   }
 
   @GetMapping("edit/{eventId}")
-  public String displayEditForm(Model model, @PathVariable int eventId){
+  public String displayEditForm(Model model, @PathVariable(required = false) int eventId){
 
    model.addAttribute("event" ,EventData.getById(eventId));
     return "events/edit";
@@ -68,11 +68,23 @@ public class EventController {
   }
 
   @PostMapping("edit")
-  public String processEditForm(int eventId, String name, String description){
+  public String processEditForm(@ModelAttribute @Valid Event event, Errors errors, Model model){
 
-    Event editedEvent = EventData.getById(eventId);
-    editedEvent.setName(name);
-    editedEvent.setDescription(description);
+    if (errors.hasErrors()) {
+      model.addAttribute("event", event);
+      return "events/edit";
+    }
+
+    Event editedEvent = EventData.getById(event.getId());
+
+    if (editedEvent != null) {
+      editedEvent.setName(event.getName());
+      editedEvent.setDescription(event.getDescription());
+      editedEvent.setContactEmail(event.getContactEmail());
+      editedEvent.setLocation(event.getLocation());
+      editedEvent.setAttendees(event.getAttendees());
+      editedEvent.setHasRegistration(event.isHasRegistration());
+    }
 
     return "redirect:/events";
 
