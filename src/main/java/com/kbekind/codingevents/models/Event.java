@@ -1,8 +1,6 @@
 package com.kbekind.codingevents.models;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
@@ -22,7 +20,21 @@ public class Event {
   @Email(message = "Invalid email")
   private String contactEmail;
 
-  public Event() {}
+  @NotNull(message = "Location must not be null")
+  @NotBlank(message = "Location must not be blank")
+  @Size(min = 3, max = 50, message = "Location must be between 3 and 50 characters")
+  private String location;
+
+  @AssertTrue(message = "attendee registration is required")
+  private boolean hasRegistration;
+
+  @Positive(message = "Need more attendees")
+  private Integer attendees;
+
+  public Event() {
+    this.id = nextId;
+    nextId++;
+  }
 
   public Event(String name, String description, String contactEmail) {
     this.id = nextId;
@@ -58,6 +70,30 @@ public class Event {
 
   public void setContactEmail(String contactEmail) {
     this.contactEmail = contactEmail;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public boolean isHasRegistration() {
+    return hasRegistration;
+  }
+
+  public void setHasRegistration(boolean hasRegistration) {
+    this.hasRegistration = hasRegistration;
+  }
+
+  public Integer getAttendees() {
+    return attendees;
+  }
+
+  public void setAttendees(Integer attendees) {
+    this.attendees = attendees;
   }
 
   @Override
