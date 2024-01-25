@@ -2,8 +2,10 @@ package com.kbekind.codingevents.controllers;
 
 import com.kbekind.codingevents.data.EventData;
 import com.kbekind.codingevents.models.Event;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -23,13 +25,21 @@ public class EventController {
   }
 
   @GetMapping("create")
-  public String renderCreateEventForm(){
+  public String renderCreateEventForm(Model model){
+
+  model.addAttribute(new Event());
+
     return "events/create";
   }
 
   @PostMapping("create")
-  public String processCreateEventForm(@ModelAttribute Event newEvent){
+  public String processCreateEventForm(@ModelAttribute @Valid Event newEvent, Errors errors, Model model){
 
+    if(errors.hasErrors()){
+
+      return "events/create";
+
+    }
     EventData.add(newEvent);
     return "redirect:/events";
   }
