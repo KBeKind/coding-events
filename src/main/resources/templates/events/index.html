@@ -17,6 +17,7 @@
         <th>Location</th>
         <th>Attendees</th>
         <th>Registration?</th>
+        <th>Day of Week</th>
     </tr>
     </thead>
     <th:block th:each="event : ${events}">
@@ -29,9 +30,12 @@
             <td th:text="${event.location}"></td>
             <td th:text="${event.attendees}"></td>
             <td th:text="${event.hasRegistration}"></td>
+            <td th:text="${event.day.displayName}"></td>
+
             <td>
                 <a th:href="@{/events/edit/{id}(id=${event.id})}">Edit</a>
             </td>
+
 
             <td th:replace="fragments :: address"/>
         </tr>

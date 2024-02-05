@@ -1,6 +1,7 @@
 package com.kbekind.codingevents.controllers;
 
 import com.kbekind.codingevents.data.EventData;
+import com.kbekind.codingevents.models.DaysOfWeek;
 import com.kbekind.codingevents.models.Event;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,8 @@ public class EventController {
 
   @GetMapping("create")
   public String renderCreateEventForm(Model model){
-
-  model.addAttribute(new Event());
+    model.addAttribute("daysOfWeek", DaysOfWeek.values());
+    model.addAttribute(new Event());
 
     return "events/create";
   }
@@ -36,7 +37,7 @@ public class EventController {
   public String processCreateEventForm(@ModelAttribute @Valid Event newEvent, Errors errors, Model model){
 
     if(errors.hasErrors()){
-
+      model.addAttribute("daysOfWeek", DaysOfWeek.values());
       return "events/create";
 
     }

@@ -10,6 +10,7 @@ public class Event {
   private static int nextId = 1;
 
   @NotBlank(message = "Name must not be blank")
+  @NotNull
   @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
   private String name;
 
@@ -31,16 +32,20 @@ public class Event {
   @Positive(message = "Need more attendees")
   private Integer attendees;
 
+  //@NotNull(message="Hey you need to pick a day!")
+  private DaysOfWeek day;
+
   public Event() {
     this.id = nextId;
     nextId++;
   }
 
-  public Event(String name, String description, String contactEmail) {
+  public Event(String name, String description, String contactEmail, DaysOfWeek day) {
     this.id = nextId;
     this.name = name;
     this.description = description;
     this.contactEmail = contactEmail;
+    this.day = day;
     nextId++;
   }
 
@@ -94,6 +99,14 @@ public class Event {
 
   public void setAttendees(Integer attendees) {
     this.attendees = attendees;
+  }
+
+  public void setDay(DaysOfWeek day) {
+    this.day = day;
+  }
+
+  public DaysOfWeek getDay() {
+    return day;
   }
 
   @Override
